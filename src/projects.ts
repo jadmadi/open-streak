@@ -1,7 +1,7 @@
 import { ProjectRow } from "./db.js";
 import { compactNumber } from "./stats.js";
 import { theme, gradientBar } from "./theme.js";
-import { top, mid, bottom, row, col, truncate, BOX_WIDTH } from "./box.js";
+import { top, mid, bottom, row, col, truncate, dimBorder, BOX_WIDTH } from "./box.js";
 
 const BAR_W = 18;
 const NAME_W = 22;
@@ -19,11 +19,12 @@ export function renderProjects(projects: ProjectRow[], c: boolean): string[] {
   const totalTokens = projects.reduce((s, p) => s + p.tokens, 0);
   const totalSessions = projects.reduce((s, p) => s + p.sessions, 0);
 
+  const b = (s: string) => dimBorder(s, c);
   const lines: string[] = [
     "",
-    top(),
+    b(top()),
     row(theme.bold("PROJECT ACTIVITY", c)),
-    mid(),
+    b(mid()),
   ];
 
   for (const project of projects) {
@@ -35,12 +36,12 @@ export function renderProjects(projects: ProjectRow[], c: boolean): string[] {
     lines.push(row(`${name} ${bar} ${tok} ${sess}`));
   }
 
-  lines.push(mid());
+  lines.push(b(mid()));
   const totBar = gradientBar(1, BAR_W, c);
   const totTok = theme.white(col(compactNumber(totalTokens), TOK_W, "right"), c);
   const totSess = theme.dim(col(`${totalSessions} sess`, SESS_W, "right"), c);
   lines.push(row(`${theme.dim("TOTAL", c)}${" ".repeat(NAME_W - 5)} ${totBar} ${totTok} ${totSess}`));
-  lines.push(bottom());
+  lines.push(b(bottom()));
   lines.push("");
   return lines;
 }

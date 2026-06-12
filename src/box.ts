@@ -43,3 +43,7 @@ export function col(content: string, width: number, align: "left" | "right" = "l
   const pad = width - vl;
   return align === "left" ? content + " ".repeat(pad) : " ".repeat(pad) + content;
 }
+
+export function dimBorder(s: string, c: boolean): string {
+  return c ? `\u001b[38;5;240m${s}\u001b[0m` : s;
+}

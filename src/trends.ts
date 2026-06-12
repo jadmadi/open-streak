@@ -1,7 +1,7 @@
 import { DailyRow } from "./db.js";
 import { compactNumber } from "./stats.js";
 import { theme, gradientBar } from "./theme.js";
-import { top, mid, bottom, row, col, BOX_WIDTH } from "./box.js";
+import { top, mid, bottom, row, col, dimBorder, BOX_WIDTH } from "./box.js";
 
 const sparkChars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
 const LABEL_W = 14;
@@ -53,13 +53,14 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
   const activeDays = daily.filter((d) => d.turns > 0).length;
   const avgDay = activeDays > 0 ? Math.round(totalTokens / activeDays) : 0;
 
+  const b = (s: string) => dimBorder(s, c);
   const lines: string[] = [
     "",
-    top(),
+    b(top()),
     row(theme.bold("WEEKLY TREND", c)),
-    mid(),
+    b(mid()),
     row(trendColor(sparkline + trendPct, c)),
-    mid(),
+    b(mid()),
     row(theme.bold("SUMMARY", c)),
     row(""),
     row(`${theme.dim("TOTAL TOKENS", c)}  ${theme.white(col(compactNumber(totalTokens), VAL_W, "right"), c)}`),
@@ -67,7 +68,7 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
     row(`${theme.dim("ACTIVE DAYS ", c)}  ${theme.white(col(String(activeDays), VAL_W, "right"), c)}`),
     row(`${theme.dim("AVG/DAY     ", c)}  ${theme.white(col(compactNumber(avgDay), VAL_W, "right"), c)}`),
     row(""),
-    bottom(),
+    b(bottom()),
     "",
   ];
 

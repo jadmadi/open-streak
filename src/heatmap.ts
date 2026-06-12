@@ -24,8 +24,10 @@ export function renderHeatmap(
     }
   }
 
-  const labels = ["   ", "Mon", "   ", "Wed", "   ", "Fri", "   "];
-  const lines = [`       ${monthLine.join("")}`];
+  const dim = (s: string) => theme.dim(s, colors);
+
+  const labels = ["   ", dim("Mon"), "   ", dim("Wed"), "   ", dim("Fri"), "   "];
+  const lines = [`       ${dim(monthLine.join(""))}`];
   for (let weekday = 0; weekday < 7; weekday += 1) {
     let row = `  ${labels[weekday]}  `;
     for (let week = 0; week < weeks; week += 1) {
@@ -36,6 +38,6 @@ export function renderHeatmap(
   }
 
   const legend = [0, 1, 2, 3, 4].map((level) => heatCell(level, colors)).join("");
-  lines.push(`       Less ${legend} More`);
+  lines.push(`       ${dim("Less")} ${legend} ${dim("More")}`);
   return lines;
 }
