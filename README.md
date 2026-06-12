@@ -45,38 +45,56 @@ GitHub-style terminal activity heatmap for your MiMoCode usage data.
 
 - **Node.js >= 22.5.0** (for built-in `node:sqlite` support)
 
-## Install
+## Quick start
 
-```bash
-npm install -g mimo-streak
-mimo-streak
-```
-
-With pnpm:
-
-```bash
-pnpm add -g mimo-streak
-```
-
-Run without installing:
+No install needed:
 
 ```bash
 npx mimo-streak
 ```
 
-## Usage
+Or install globally:
 
 ```bash
-mimo-streak                    # Activity heatmap with streaks
-mimo-streak --weeks 26         # Show 26 weeks
-mimo-streak --json             # Output as JSON
-mimo-streak --no-color         # Disable colors
-mimo-streak --project mimo     # Filter by project name
-mimo-streak models             # Model breakdown
-mimo-streak projects           # Project activity
-mimo-streak trends             # Weekly trend chart
-mimo-streak models mimo        # Filter models by name
-mimo-streak projects whatsapp  # Filter projects by name
+npm install -g mimo-streak
+# or
+pnpm add -g mimo-streak
+```
+
+## Usage
+
+### Dashboard
+
+```bash
+npx mimo-streak                    # Full heatmap dashboard
+npx mimo-streak --weeks 26         # Show 26 weeks
+npx mimo-streak --weeks 4          # Show 4 weeks
+npx mimo-streak --no-color         # Disable colors
+npx mimo-streak --json             # Output as JSON
+npx mimo-streak --json --weeks 8   # JSON for 8 weeks
+```
+
+### Subcommands
+
+```bash
+npx mimo-streak models                  # Token usage by model
+npx mimo-streak models mimo             # Filter models by name
+npx mimo-streak models --json           # JSON output
+
+npx mimo-streak projects                # Activity by project
+npx mimo-streak projects whatsapp       # Filter projects by name
+npx mimo-streak projects --json         # JSON output
+
+npx mimo-streak trends                  # Weekly sparkline chart
+npx mimo-streak trends --json           # JSON output
+```
+
+### Filtering
+
+```bash
+npx mimo-streak --project mimo          # Filter heatmap by project
+npx mimo-streak --db /path/to/db        # Custom database path
+npx mimo-streak --version               # Show version
 ```
 
 ## Options
