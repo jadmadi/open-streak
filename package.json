@@ -1,0 +1,63 @@
+{
+  "name": "mimo-streak",
+  "version": "0.1.0",
+  "description": "GitHub-style terminal activity heatmap for MiMoCode",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mimo-streak": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "node dist/index.js --no-color"
+  },
+  "keywords": [
+    "mimocode",
+    "cli",
+    "sqlite",
+    "activity",
+    "streak",
+    "terminal",
+    "heatmap"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mimocode/mimo-streak"
+  },
+  "homepage": "https://github.com/mimocode/mimo-streak#readme",
+  "bugs": {
+    "url": "https://github.com/mimocode/mimo-streak/issues"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.5.1",
+      "onFail": "download"
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.10.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^24.0.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
+  }
+}
