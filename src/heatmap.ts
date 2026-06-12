@@ -11,7 +11,6 @@ export function renderHeatmap(
   const firstSunday = addDays(thisSunday, -(weeks - 1) * 7);
   const thresholds = activityThresholds(activity);
 
-  // Month labels — each week column = 1 char
   const monthLine: string[] = Array.from({ length: weeks }, () => " ");
   let lastMonth = -1;
   for (let week = 0; week < weeks; week += 1) {

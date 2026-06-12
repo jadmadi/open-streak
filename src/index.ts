@@ -107,6 +107,16 @@ function parseArgs(args: string[]): Options {
   return options;
 }
 
+function wrapBox(content: string[], c: boolean): string {
+  const b = (s: string) => dimBorder(s, c);
+  const output = ["", b(top())];
+  for (const line of content) {
+    output.push(row(line.trim()));
+  }
+  output.push(b(bottom()), "");
+  return output.join("\n");
+}
+
 function main(): void {
   const options = parseArgs(process.argv.slice(2));
   const colors = !options.noColor && Boolean(process.stdout.isTTY) && !process.env.NO_COLOR;
@@ -122,8 +132,6 @@ function main(): void {
           const name = m.model.toLowerCase();
           if (name === filter) return true;
           if (m.provider.toLowerCase() === filter) return true;
-          // "mimo" → only single-segment models whose name starts with "mimo"
-          // "mimo-v2.5" → prefix match (matches mimo-v2.5 and mimo-v2.5-pro)
           if (filterSegments === 1) {
             const nameSegments = name.split("-").length;
             return nameSegments === 1 && name.startsWith(filter);
@@ -134,7 +142,7 @@ function main(): void {
       if (options.json) {
         console.log(JSON.stringify(models, null, 2));
       } else {
-        console.log(renderModels(models, colors).join("\n"));
+        console.log(wrapBox(renderModels(models, colors), colors));
       }
       return;
     }
@@ -148,7 +156,7 @@ function main(): void {
       if (options.json) {
         console.log(JSON.stringify(projects, null, 2));
       } else {
-        console.log(renderProjects(projects, colors).join("\n"));
+        console.log(wrapBox(renderProjects(projects, colors), colors));
       }
       return;
     }
@@ -158,7 +166,7 @@ function main(): void {
       if (options.json) {
         console.log(JSON.stringify(daily, null, 2));
       } else {
-        console.log(renderTrends(daily, colors).join("\n"));
+        console.log(wrapBox(renderTrends(daily, colors), colors));
       }
       return;
     }

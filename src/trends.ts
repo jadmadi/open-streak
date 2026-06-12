@@ -1,14 +1,13 @@
 import { DailyRow } from "./db.js";
 import { compactNumber } from "./stats.js";
 import { theme, gradientBar } from "./theme.js";
-import { top, mid, bottom, row, emptyRow, col, dimBorder } from "./box.js";
+import { col } from "./box.js";
 
 const sparkChars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
-const LABEL_W = 14;
 const VAL_W = 14;
 
 export function renderTrends(daily: DailyRow[], c: boolean): string[] {
-  if (daily.length === 0) return [row(theme.dim("No activity data available.", c))];
+  if (daily.length === 0) return [theme.dim("No activity data available.", c)];
 
   const weeks: { start: string; tokens: number; days: number }[] = [];
   let currentWeek: { start: string; tokens: number; days: number } | null = null;
@@ -53,26 +52,16 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
   const activeDays = daily.filter((d) => d.turns > 0).length;
   const avgDay = activeDays > 0 ? Math.round(totalTokens / activeDays) : 0;
 
-  const b = (s: string) => dimBorder(s, c);
-  const lines: string[] = [
+  return [
+    theme.bold("WEEKLY TREND", c),
     "",
-    b(top()),
-    row(theme.bold("WEEKLY TREND", c)),
-    b(mid()),
-    emptyRow(),
-    row(`  ${trendColor(sparkline + trendPct, c)}`),
-    emptyRow(),
-    b(mid()),
-    row(theme.bold("SUMMARY", c)),
-    emptyRow(),
-    row(`  ${theme.dim("⚡ Tokens", c)}  ${theme.bright(col(compactNumber(totalTokens), VAL_W, "right"), c)}`),
-    row(`  ${theme.dim("$  Cost  ", c)}  ${theme.costColor(totalCost)(col(`$${totalCost.toFixed(2)}`, VAL_W, "right"), c)}`),
-    row(`  ${theme.dim("●  Active", c)}  ${theme.green(col(String(activeDays), VAL_W, "right"), c)}`),
-    row(`  ${theme.dim("↕  Avg/day", c)}  ${theme.white(col(compactNumber(avgDay), VAL_W, "right"), c)}`),
-    emptyRow(),
-    b(bottom()),
+    trendColor(sparkline + trendPct, c),
     "",
+    theme.bold("SUMMARY", c),
+    "",
+    `  ${theme.dim("⚡ Tokens", c)}  ${theme.bright(col(compactNumber(totalTokens), VAL_W, "right"), c)}`,
+    `  ${theme.dim("$  Cost  ", c)}  ${theme.costColor(totalCost)(col(`$${totalCost.toFixed(2)}`, VAL_W, "right"), c)}`,
+    `  ${theme.dim("●  Active", c)}  ${theme.green(col(String(activeDays), VAL_W, "right"), c)}`,
+    `  ${theme.dim("↕  Avg/day", c)}  ${theme.white(col(compactNumber(avgDay), VAL_W, "right"), c)}`,
   ];
-
-  return lines;
 }

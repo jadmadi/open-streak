@@ -1,7 +1,7 @@
 import { ModelRow } from "./db.js";
 import { compactNumber } from "./stats.js";
 import { theme, gradientBar } from "./theme.js";
-import { top, mid, bottom, row, emptyRow, col, dimBorder } from "./box.js";
+import { col } from "./box.js";
 
 const BAR_W = 20;
 const NAME_W = 22;
@@ -9,19 +9,15 @@ const TOK_W = 9;
 const COST_W = 9;
 
 export function renderModels(models: ModelRow[], c: boolean): string[] {
-  if (models.length === 0) return [row(theme.dim("No model data available.", c))];
+  if (models.length === 0) return [theme.dim("No model data available.", c)];
 
   const maxTokens = Math.max(...models.map((m) => m.tokens));
   const totalTokens = models.reduce((s, m) => s + m.tokens, 0);
   const totalCost = models.reduce((s, m) => s + m.cost, 0);
 
-  const b = (s: string) => dimBorder(s, c);
   const lines: string[] = [
+    theme.bold("MODEL BREAKDOWN", c),
     "",
-    b(top()),
-    row(theme.bold("MODEL BREAKDOWN", c)),
-    b(mid()),
-    emptyRow(),
   ];
 
   for (const model of models) {
@@ -30,16 +26,13 @@ export function renderModels(models: ModelRow[], c: boolean): string[] {
     const name = theme.teal(col(`${model.model} (${model.provider})`, NAME_W), c);
     const tok = theme.white(col(compactNumber(model.tokens), TOK_W, "right"), c);
     const cost = theme.costColor(model.cost)(col(`$${model.cost.toFixed(2)}`, COST_W, "right"), c);
-    lines.push(row(`  ${name}  ${bar}  ${tok}  ${cost}`));
+    lines.push(`  ${name}  ${bar}  ${tok}  ${cost}`);
   }
 
-  lines.push(emptyRow());
-  lines.push(b(mid()));
+  lines.push("");
   const totBar = gradientBar(1, BAR_W, c);
   const totTok = theme.bright(col(compactNumber(totalTokens), TOK_W, "right"), c);
   const totCost = theme.costColor(totalCost)(col(`$${totalCost.toFixed(2)}`, COST_W, "right"), c);
-  lines.push(row(`  ${theme.dim("TOTAL", c)}${" ".repeat(NAME_W - 5)}  ${totBar}  ${totTok}  ${totCost}`));
-  lines.push(b(bottom()));
-  lines.push("");
+  lines.push(`  ${theme.dim("TOTAL", c)}${" ".repeat(NAME_W - 5)}  ${totBar}  ${totTok}  ${totCost}`);
   return lines;
 }
