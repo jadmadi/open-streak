@@ -3,6 +3,10 @@
 GitHub-style terminal activity heatmap for your MiMoCode usage data.
 
 <p align="center">
+  <img src="mimo-streak.gif" alt="mimo-streak demo" width="800">
+</p>
+
+<p align="center">
   <a href="https://github.com/jadmadi/mimo-streak/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License">
   </a>
