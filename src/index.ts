@@ -10,19 +10,21 @@ import { renderTrends } from "./trends.js";
 const reset = "\u001b[0m";
 
 function usage(): string {
-  return `Usage: mimo-streak [options] [command]
+  return `Usage: mimo-streak [options] [command] [filter]
 
 GitHub-style terminal activity heatmap for MiMoCode usage data.
 
 Commands:
-  trends       Show weekly trend sparkline chart
-  models       Show token usage breakdown by model
-  projects     Show activity breakdown by project directory
+  trends [filter]       Show weekly trend sparkline chart
+  models [filter]       Show token usage breakdown by model
+  projects [filter]     Show activity breakdown by project directory
+
+  The optional [filter] narrows results to matching names.
 
 Options:
   --db <path>       SQLite database path (default: ~/.local/share/mimocode/mimocode.db)
   --weeks <number>  Heatmap width in weeks, from 4 to 104 (default: 52)
-  --project <name>  Filter activity by project directory name
+  --project <name>  Filter heatmap activity by project directory name
   --json            Print computed data as JSON instead of the dashboard
   --no-color        Disable ANSI colors
   -h, --help        Show this help`;
@@ -83,10 +85,17 @@ function parseArgs(args: string[]): Options {
       continue;
     }
 
-    if (!argument.startsWith("-") && positionalIndex === 0) {
-      options.subcommand = argument;
-      positionalIndex += 1;
-      continue;
+    if (!argument.startsWith("-")) {
+      if (positionalIndex === 0) {
+        options.subcommand = argument;
+        positionalIndex += 1;
+        continue;
+      }
+      if (positionalIndex === 1 && (options.subcommand === "projects" || options.subcommand === "models" || options.subcommand === "trends")) {
+        options.project = argument;
+        positionalIndex += 1;
+        continue;
+      }
     }
 
     console.error(`mimo-streak: unknown option: ${argument}`);
@@ -103,7 +112,11 @@ function main(): void {
 
   try {
     if (options.subcommand === "models") {
-      const models = loadModels(db, options.since, options.until);
+      let models = loadModels(db, options.since, options.until);
+      if (options.project) {
+        const filter = options.project.toLowerCase();
+        models = models.filter((m) => m.model.toLowerCase().includes(filter) || m.provider.toLowerCase().includes(filter));
+      }
       if (options.json) {
         console.log(JSON.stringify(models, null, 2));
       } else {
@@ -113,7 +126,11 @@ function main(): void {
     }
 
     if (options.subcommand === "projects") {
-      const projects = loadProjects(db);
+      let projects = loadProjects(db);
+      if (options.project) {
+        const filter = options.project.toLowerCase();
+        projects = projects.filter((p) => p.directory.toLowerCase().includes(filter));
+      }
       if (options.json) {
         console.log(JSON.stringify(projects, null, 2));
       } else {
