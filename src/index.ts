@@ -173,9 +173,6 @@ function main(): void {
     const visibleTokens = visibleDays.reduce((s, d) => s + d.tokens, 0);
     const visibleActiveDays = visibleDays.filter((d) => d.turns > 0).length;
 
-    const muted = (text: string) => (colors ? `\u001b[38;5;245m${text}${reset}` : text);
-    const highlight = (text: string) => (colors ? `\u001b[1;38;5;255m${text}${reset}` : text);
-
     if (options.json) {
       console.log(
         JSON.stringify(
@@ -192,12 +189,48 @@ function main(): void {
       return;
     }
 
+    const box = {
+      tl: "╭", tr: "╮", bl: "╰", br: "╯",
+      h: "─", v: "│", ml: "├", mr: "┤",
+    };
+    const muted = (text: string) => (colors ? `\u001b[38;5;245m${text}${reset}` : text);
+    const highlight = (text: string) => (colors ? `\u001b[1;38;2;230;237;243m${text}${reset}` : text);
+    const green = (text: string) => (colors ? `\u001b[38;2;57;211;83m${text}${reset}` : text);
+    const blue = (text: string) => (colors ? `\u001b[38;2;88;166;255m${text}${reset}` : text);
+    const yellow = (text: string) => (colors ? `\u001b[38;2;210;153;34m${text}${reset}` : text);
+
+    function red(text: string) { return colors ? `\u001b[38;2;248;81;73m${text}${reset}` : text; }
+    const costColor = summary.cost > 10 ? red : summary.cost > 1 ? yellow : green;
+
+    const visLen = (s: string) => s.replace(/\u001b\[[0-9;]*m/g, "").length;
+    const padBox = (inner: string, W: number) => `  ${box.v} ${inner}${" ".repeat(Math.max(0, W - visLen(inner)))} ${box.v}`;
+
+    const W = Math.max(options.weeks + 4, 56);
+    const border = box.h.repeat(W + 2);
+
+    const stats = [
+      `${visibleActiveDays} active`,
+      `${streaks.current} streak`,
+      `${streaks.longest} best`,
+      `${compactNumber(summary.lifetimeTokens)} all-time`,
+    ].join(`  ${muted("│")}  `);
+
+    const pathStr = formatPath(options.dbPath);
+    const header = `${highlight("MiMoCode")} ${blue(compactNumber(visibleTokens))} ${muted("tokens")} ${muted("/")} ${muted(`${options.weeks}w`)}${" ".repeat(Math.max(1, W - 20 - compactNumber(visibleTokens).length - pathStr.length))}${muted(pathStr)}`;
+
+    const status = `${muted("v0.1.0")}  ${muted("│")}  ${green("●")} ${streaks.current}d streak  ${muted("│")}  ${costColor(`$${summary.cost.toFixed(2)}`)} ${muted("total cost")}`;
+
     const output = [
       "",
-      `  ${highlight("MiMoCode activity")}  ${highlight(compactNumber(visibleTokens))} tokens / ${options.weeks} weeks  ${muted(formatPath(options.dbPath))}`,
-      "",
-      ...renderHeatmap(activity, options.weeks, colors),
-      `  ${visibleActiveDays} active days  ${muted("|")}  ${streaks.current} day streak  ${muted("|")}  ${streaks.longest} best  ${muted("|")}  ${compactNumber(summary.lifetimeTokens)} all-time`,
+      `  ${box.tl}${border}${box.tr}`,
+      padBox(header, W),
+      `  ${box.ml}${border}${box.mr}`,
+      ...renderHeatmap(activity, options.weeks, colors).map((line) => padBox(line.trim(), W)),
+      `  ${box.ml}${border}${box.mr}`,
+      padBox(stats, W),
+      `  ${box.ml}${border}${box.mr}`,
+      padBox(status, W),
+      `  ${box.bl}${border}${box.br}`,
       "",
     ];
 

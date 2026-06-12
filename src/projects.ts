@@ -1,29 +1,37 @@
 import { ProjectRow } from "./db.js";
 import { compactNumber, formatPath } from "./stats.js";
+import { theme, gradientBar, padR, padL } from "./theme.js";
 
-export function renderProjects(projects: ProjectRow[], colors: boolean): string[] {
-  if (projects.length === 0) return ["  No project data available."];
-
-  const reset = "\u001b[0m";
-  const bold = (text: string) => (colors ? `\u001b[1m${text}${reset}` : text);
-  const muted = (text: string) => (colors ? `\u001b[38;5;245m${text}${reset}` : text);
+export function renderProjects(projects: ProjectRow[], c: boolean): string[] {
+  if (projects.length === 0) return [theme.dim("  No project data available.", c)];
 
   const maxTokens = Math.max(...projects.map((p) => p.tokens));
-  const lines = [
+  const totalTokens = projects.reduce((s, p) => s + p.tokens, 0);
+  const totalSessions = projects.reduce((s, p) => s + p.sessions, 0);
+  const W = 36;
+  const border = theme.box.h.repeat(W + 44);
+
+  const lines: string[] = [
     "",
-    `  ${bold("Project Activity")}`,
-    "",
+    `  ${theme.box.tl}${border}${theme.box.tr}`,
+    `  ${theme.box.v} ${theme.bold("PROJECT ACTIVITY", c)}${" ".repeat(W + 26)}${theme.box.v}`,
+    `  ${theme.box.ml}${border}${theme.box.mr}`,
   ];
 
   for (const project of projects) {
-    const bar = maxTokens > 0 ? Math.round((project.tokens / maxTokens) * 25) : 0;
-    const barStr = "█".repeat(bar) + "░".repeat(25 - bar);
-    const dir = formatPath(project.directory ?? "unknown");
-    lines.push(
-      `  ${dir.padEnd(35)} ${muted(barStr)} ${compactNumber(project.tokens)} tokens  ${project.sessions} sessions`
-    );
+    const pct = maxTokens > 0 ? project.tokens / maxTokens : 0;
+    const bar = gradientBar(pct, 20, c);
+    const dir = theme.green(padR(formatPath(project.directory ?? "unknown"), W), c);
+    const tok = theme.white(padL(compactNumber(project.tokens), 8), c);
+    const sess = theme.dim(padL(`${project.sessions} sess`, 7), c);
+    lines.push(`  ${theme.box.v} ${dir} ${bar} ${tok} ${sess} ${theme.box.v}`);
   }
 
+  lines.push(`  ${theme.box.ml}${border}${theme.box.mr}`);
+  const tokTotal = theme.white(padL(compactNumber(totalTokens), 8), c);
+  const sessTotal = theme.dim(padL(`${totalSessions} sess`, 7), c);
+  lines.push(`  ${theme.box.v} ${theme.dim("TOTAL", c)}${" ".repeat(W - 5)} ${gradientBar(1, 20, c)} ${tokTotal} ${sessTotal} ${theme.box.v}`);
+  lines.push(`  ${theme.box.bl}${border}${theme.box.br}`);
   lines.push("");
   return lines;
 }

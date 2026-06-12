@@ -1,16 +1,5 @@
 import { DayActivity, activityThresholds, activityLevel, startOfToday, addDays, localDay } from "./stats.js";
-
-const reset = "\u001b[0m";
-
-function color(enabled: boolean, code: string, value: string): string {
-  return enabled ? `\u001b[${code}m${value}${reset}` : value;
-}
-
-function heatCell(level: number, colors: boolean): string {
-  if (!colors) return ["□", "░", "▒", "▓", "█"][level];
-  const palette = ["38;5;238", "38;5;22", "38;5;28", "38;5;34", "38;5;40"];
-  return color(true, palette[level], "■");
-}
+import { theme, heatCell } from "./theme.js";
 
 export function renderHeatmap(
   activity: Map<string, DayActivity>,
@@ -36,9 +25,9 @@ export function renderHeatmap(
   }
 
   const labels = ["   ", "Mon", "   ", "Wed", "   ", "Fri", "   "];
-  const lines = [`      ${monthLine.join("")}`];
+  const lines = [`       ${monthLine.join("")}`];
   for (let weekday = 0; weekday < 7; weekday += 1) {
-    let row = `  ${labels[weekday]} `;
+    let row = `  ${labels[weekday]}  `;
     for (let week = 0; week < weeks; week += 1) {
       const date = addDays(firstSunday, week * 7 + weekday);
       row += date > today ? " " : heatCell(activityLevel(activity.get(localDay(date)), thresholds), colors);
@@ -47,6 +36,6 @@ export function renderHeatmap(
   }
 
   const legend = [0, 1, 2, 3, 4].map((level) => heatCell(level, colors)).join("");
-  lines.push(`      Less ${legend} More`);
+  lines.push(`       Less ${legend} More`);
   return lines;
 }
