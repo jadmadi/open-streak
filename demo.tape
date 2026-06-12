@@ -22,41 +22,36 @@ Sleep 500ms
 Show
 
 # Default view — full heatmap dashboard
-Type "open-streak"
+Type "npx open-streak"
 Enter
 Sleep 3s
 
 # Narrow to 26 weeks
-Type "open-streak --weeks 26"
+Type "npx open-streak --weeks 26"
 Enter
 Sleep 2.5s
 
 # Model breakdown
-Type "open-streak models"
+Type "npx open-streak models"
 Enter
 Sleep 2.5s
 
 # Filtered models
-Type "open-streak models claude"
-Enter
-Sleep 2.5s
-
-# Project activity
-Type "open-streak projects"
+Type "npx open-streak models mimo"
 Enter
 Sleep 2.5s
 
 # Weekly trends
-Type "open-streak trends"
+Type "npx open-streak trends"
 Enter
 Sleep 2.5s
 
 # JSON output
-Type "open-streak --json --weeks 8"
+Type "npx open-streak --json --weeks 8"
 Enter
 Sleep 2s
 
 # Help
-Type "open-streak --help"
+Type "npx open-streak --help"
 Enter
 Sleep 2s

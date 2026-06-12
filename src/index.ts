@@ -135,15 +135,10 @@ function main(): void {
       let models = loadModels(db, options.since, options.until);
       if (options.project) {
         const filter = options.project.toLowerCase();
-        const filterSegments = filter.split("-").length;
         models = models.filter((m) => {
           const name = m.model.toLowerCase();
           if (name === filter) return true;
           if (m.provider.toLowerCase() === filter) return true;
-          if (filterSegments === 1) {
-            const nameSegments = name.split("-").length;
-            return nameSegments === 1 && name.startsWith(filter);
-          }
           return name.startsWith(filter);
         });
       }
