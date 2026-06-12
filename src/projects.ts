@@ -1,6 +1,10 @@
 import { ProjectRow } from "./db.js";
-import { compactNumber, formatPath } from "./stats.js";
+import { compactNumber } from "./stats.js";
 import { theme, gradientBar, padR, padL } from "./theme.js";
+
+function projectName(path: string): string {
+  return path.split("/").filter(Boolean).pop() ?? path;
+}
 
 export function renderProjects(projects: ProjectRow[], c: boolean): string[] {
   if (projects.length === 0) return [theme.dim("  No project data available.", c)];
@@ -8,7 +12,7 @@ export function renderProjects(projects: ProjectRow[], c: boolean): string[] {
   const maxTokens = Math.max(...projects.map((p) => p.tokens));
   const totalTokens = projects.reduce((s, p) => s + p.tokens, 0);
   const totalSessions = projects.reduce((s, p) => s + p.sessions, 0);
-  const W = 36;
+  const W = 24;
   const border = theme.box.h.repeat(W + 44);
 
   const lines: string[] = [
@@ -21,10 +25,10 @@ export function renderProjects(projects: ProjectRow[], c: boolean): string[] {
   for (const project of projects) {
     const pct = maxTokens > 0 ? project.tokens / maxTokens : 0;
     const bar = gradientBar(pct, 20, c);
-    const dir = theme.green(padR(formatPath(project.directory ?? "unknown"), W), c);
+    const name = theme.green(padR(projectName(project.directory ?? "unknown"), W), c);
     const tok = theme.white(padL(compactNumber(project.tokens), 8), c);
     const sess = theme.dim(padL(`${project.sessions} sess`, 7), c);
-    lines.push(`  ${theme.box.v} ${dir} ${bar} ${tok} ${sess} ${theme.box.v}`);
+    lines.push(`  ${theme.box.v} ${name} ${bar} ${tok} ${sess} ${theme.box.v}`);
   }
 
   lines.push(`  ${theme.box.ml}${border}${theme.box.mr}`);
