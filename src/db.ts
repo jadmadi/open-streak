@@ -48,14 +48,14 @@ export type ProjectRow = {
   sessions: number;
 };
 
-export const defaultDbPath = join(homedir(), ".local", "share", "mimocode", "mimocode.db");
+export const defaultDbPath = join(homedir(), ".local", "share", "opencode", "opencode.db");
 
 export function openDb(dbPath: string): DatabaseSync {
   if (!existsSync(dbPath)) {
-    console.error(`mimo-streak: database not found: ${dbPath}`);
+    console.error(`open-streak: database not found: ${dbPath}`);
     console.error("");
-    console.error("  This tool reads from MiMoCode's SQLite database.");
-    console.error("  Make sure MiMoCode is installed and has been used at least once.");
+    console.error("  This tool reads from OpenCode's SQLite database.");
+    console.error("  Make sure OpenCode is installed and has been used at least once.");
     console.error("  Or specify a custom path with --db <path>");
     process.exit(1);
   }

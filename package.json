@@ -1,11 +1,11 @@
 {
-  "name": "mimo-streak",
-  "version": "0.1.1",
-  "description": "GitHub-style terminal activity heatmap for MiMoCode",
+  "name": "open-streak",
+  "version": "0.1.0",
+  "description": "GitHub-style terminal activity heatmap for OpenCode",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "mimo-streak": "./dist/index.js"
+    "open-streak": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
     "check": "node dist/index.js --no-color"
   },
   "keywords": [
-    "mimocode",
+    "opencode",
     "cli",
     "sqlite",
     "activity",
@@ -36,11 +36,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jadmadi/mimo-streak"
+    "url": "https://github.com/jadmadi/open-streak"
   },
-  "homepage": "https://github.com/jadmadi/mimo-streak#readme",
+  "homepage": "https://github.com/jadmadi/open-streak#readme",
   "bugs": {
-    "url": "https://github.com/jadmadi/mimo-streak/issues"
+    "url": "https://github.com/jadmadi/open-streak/issues"
   },
   "devDependencies": {
     "@types/node": "^24.0.4",

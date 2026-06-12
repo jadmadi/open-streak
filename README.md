@@ -1,13 +1,15 @@
-# mimo-streak
+# open-streak
 
-GitHub-style terminal activity heatmap for your MiMoCode usage data.
+GitHub-style terminal activity heatmap for your OpenCode usage data.
+
+> **Disclaimer:** This is an independent, open-source project built by the community. It is **not** built by, endorsed by, or affiliated with the OpenCode team in any way.
 
 <p align="center">
-  <img src="mimo-streak.gif" alt="mimo-streak demo" width="800">
+  <img src="open-streak.gif" alt="open-streak demo" width="800">
 </p>
 
 <p align="center">
-  <a href="https://github.com/jadmadi/mimo-streak/blob/main/LICENSE">
+  <a href="https://github.com/jadmadi/open-streak/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License">
   </a>
   <a href="https://paypal.me/Madise">
@@ -17,7 +19,7 @@ GitHub-style terminal activity heatmap for your MiMoCode usage data.
 
 ```
 ╭────────────────────────────────────────────────────────────────────────╮
-│ MiMoCode  414M tokens  ·  52w                                        │
+│ OpenCode  414M tokens  ·  52w                                        │
 ├────────────────────────────────────────────────────────────────────────┤
 │                                                                        │
 │ JunJul Aug  Sep Oct Nov  Dec Jan Feb Mar  Apr May  J                   │
@@ -50,15 +52,15 @@ GitHub-style terminal activity heatmap for your MiMoCode usage data.
 No install needed:
 
 ```bash
-npx mimo-streak
+npx open-streak
 ```
 
 Or install globally:
 
 ```bash
-npm install -g mimo-streak
+npm install -g open-streak
 # or
-pnpm add -g mimo-streak
+pnpm add -g open-streak
 ```
 
 ## Usage
@@ -66,42 +68,42 @@ pnpm add -g mimo-streak
 ### Dashboard
 
 ```bash
-npx mimo-streak                    # Full heatmap dashboard
-npx mimo-streak --weeks 26         # Show 26 weeks
-npx mimo-streak --weeks 4          # Show 4 weeks
-npx mimo-streak --no-color         # Disable colors
-npx mimo-streak --json             # Output as JSON
-npx mimo-streak --json --weeks 8   # JSON for 8 weeks
+npx open-streak                    # Full heatmap dashboard
+npx open-streak --weeks 26         # Show 26 weeks
+npx open-streak --weeks 4          # Show 4 weeks
+npx open-streak --no-color         # Disable colors
+npx open-streak --json             # Output as JSON
+npx open-streak --json --weeks 8   # JSON for 8 weeks
 ```
 
 ### Subcommands
 
 ```bash
-npx mimo-streak models                  # Token usage by model
-npx mimo-streak models mimo             # Filter models by name
-npx mimo-streak models --json           # JSON output
+npx open-streak models                  # Token usage by model
+npx open-streak models claude           # Filter models by name
+npx open-streak models --json           # JSON output
 
-npx mimo-streak projects                # Activity by project
-npx mimo-streak projects whatsapp       # Filter projects by name
-npx mimo-streak projects --json         # JSON output
+npx open-streak projects                # Activity by project
+npx open-streak projects whatsapp       # Filter projects by name
+npx open-streak projects --json         # JSON output
 
-npx mimo-streak trends                  # Weekly sparkline chart
-npx mimo-streak trends --json           # JSON output
+npx open-streak trends                  # Weekly sparkline chart
+npx open-streak trends --json           # JSON output
 ```
 
 ### Filtering
 
 ```bash
-npx mimo-streak --project mimo          # Filter heatmap by project
-npx mimo-streak --db /path/to/db        # Custom database path
-npx mimo-streak --version               # Show version
+npx open-streak --project myapp         # Filter heatmap by project
+npx open-streak --db /path/to/db        # Custom database path
+npx open-streak --version               # Show version
 ```
 
 ## Options
 
 | Flag | Description |
 |------|-------------|
-| `--db <path>` | SQLite database path (default: `~/.local/share/mimocode/mimocode.db`) |
+| `--db <path>` | SQLite database path (default: `~/.local/share/opencode/opencode.db`) |
 | `--weeks <4-104>` | Heatmap width in weeks (default: 52) |
 | `--project <name>` | Filter heatmap activity by project directory name |
 | `--json` | Output as JSON |
@@ -112,7 +114,7 @@ npx mimo-streak --version               # Show version
 
 | Command | Description |
 |---------|-------------|
-| `models [filter]` | Token usage by model (mimo-auto, mimo-v2.5, etc.) |
+| `models [filter]` | Token usage by model (claude-sonnet-4, claude-opus-4, etc.) |
 | `projects [filter]` | Activity by project directory |
 | `trends [filter]` | Weekly trend sparkline chart |
 

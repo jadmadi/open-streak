@@ -14,9 +14,9 @@ const require = createRequire(import.meta.url);
 const pkg = require("../package.json") as { version: string };
 
 function usage(): string {
-  return `Usage: mimo-streak [options] [command] [filter]
+  return `Usage: open-streak [options] [command] [filter]
 
-GitHub-style terminal activity heatmap for MiMoCode usage data.
+GitHub-style terminal activity heatmap for OpenCode usage data.
 
 Commands:
   trends [filter]       Show weekly trend sparkline chart
@@ -26,7 +26,7 @@ Commands:
   The optional [filter] narrows results to matching names.
 
 Options:
-  --db <path>       SQLite database path (default: ~/.local/share/mimocode/mimocode.db)
+  --db <path>       SQLite database path (default: ~/.local/share/opencode/opencode.db)
   --weeks <number>  Heatmap width in weeks, from 4 to 104 (default: 52)
   --project <name>  Filter heatmap activity by project directory name
   --json            Print computed data as JSON instead of the dashboard
@@ -75,7 +75,7 @@ function parseArgs(args: string[]): Options {
     if (argument === "--db" || argument === "--weeks" || argument === "--project") {
       const value = args[index + 1];
       if (!value || value.startsWith("-")) {
-        console.error(`mimo-streak: missing value for ${argument}`);
+        console.error(`open-streak: missing value for ${argument}`);
         process.exit(1);
       }
       index += 1;
@@ -85,7 +85,7 @@ function parseArgs(args: string[]): Options {
       } else if (argument === "--weeks") {
         const weeks = Number.parseInt(value, 10);
         if (!Number.isInteger(weeks) || weeks < 4 || weeks > 104) {
-          console.error("mimo-streak: --weeks must be an integer between 4 and 104");
+          console.error("open-streak: --weeks must be an integer between 4 and 104");
           process.exit(1);
         }
         options.weeks = weeks;
@@ -108,7 +108,7 @@ function parseArgs(args: string[]): Options {
       }
     }
 
-    console.error(`mimo-streak: unknown option: ${argument}`);
+    console.error(`open-streak: unknown option: ${argument}`);
     process.exit(1);
   }
 
@@ -207,7 +207,7 @@ function main(): void {
       return;
     }
 
-    const headerLine = `${t.bold("MiMoCode", colors)}  ${t.teal(compactNumber(visibleTokens), colors)} ${t.dim("tokens", colors)}  ${t.dimmer("·", colors)}  ${t.dim(`${options.weeks}w`, colors)}`;
+    const headerLine = `${t.bold("OpenCode", colors)}  ${t.teal(compactNumber(visibleTokens), colors)} ${t.dim("tokens", colors)}  ${t.dimmer("·", colors)}  ${t.dim(`${options.weeks}w`, colors)}`;
 
     // Usage stats — focal point
     const usageStats = [

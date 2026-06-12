@@ -1,6 +1,6 @@
-# mimo-streak demo — showcases all commands and options
+# open-streak demo — showcases all commands and options
 
-Output mimo-streak.gif
+Output open-streak.gif
 
 Set Width 960
 Set Height 580
@@ -22,41 +22,41 @@ Sleep 500ms
 Show
 
 # Default view — full heatmap dashboard
-Type "mimo-streak"
+Type "open-streak"
 Enter
 Sleep 3s
 
 # Narrow to 26 weeks
-Type "mimo-streak --weeks 26"
+Type "open-streak --weeks 26"
 Enter
 Sleep 2.5s
 
 # Model breakdown
-Type "mimo-streak models"
+Type "open-streak models"
 Enter
 Sleep 2.5s
 
 # Filtered models
-Type "mimo-streak models mimo"
+Type "open-streak models claude"
 Enter
 Sleep 2.5s
 
 # Project activity
-Type "mimo-streak projects"
+Type "open-streak projects"
 Enter
 Sleep 2.5s
 
 # Weekly trends
-Type "mimo-streak trends"
+Type "open-streak trends"
 Enter
 Sleep 2.5s
 
 # JSON output
-Type "mimo-streak --json --weeks 8"
+Type "open-streak --json --weeks 8"
 Enter
 Sleep 2s
 
 # Help
-Type "mimo-streak --help"
+Type "open-streak --help"
 Enter
 Sleep 2s
