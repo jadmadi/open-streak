@@ -13,7 +13,8 @@
     "dev": "tsx src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "node dist/index.js --no-color"
+    "check": "node dist/index.js --no-color",
+    "postinstall": "prebuild-install || node-gyp rebuild --release"
   },
   "keywords": [
     "mimocode",
@@ -42,13 +43,6 @@
   "homepage": "https://github.com/mimocode/mimo-streak#readme",
   "bugs": {
     "url": "https://github.com/mimocode/mimo-streak/issues"
-  },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.5.1",
-      "onFail": "download"
-    }
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0"
