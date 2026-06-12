@@ -1,7 +1,7 @@
 import { DailyRow } from "./db.js";
 import { compactNumber } from "./stats.js";
 import { theme, gradientBar } from "./theme.js";
-import { top, mid, bottom, row, col, dimBorder, BOX_WIDTH } from "./box.js";
+import { top, mid, bottom, row, emptyRow, col, dimBorder } from "./box.js";
 
 const sparkChars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
 const LABEL_W = 14;
@@ -59,15 +59,17 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
     b(top()),
     row(theme.bold("WEEKLY TREND", c)),
     b(mid()),
-    row(trendColor(sparkline + trendPct, c)),
+    emptyRow(),
+    row(`  ${trendColor(sparkline + trendPct, c)}`),
+    emptyRow(),
     b(mid()),
     row(theme.bold("SUMMARY", c)),
-    row(""),
-    row(`${theme.dim("TOTAL TOKENS", c)}  ${theme.white(col(compactNumber(totalTokens), VAL_W, "right"), c)}`),
-    row(`${theme.dim("TOTAL COST  ", c)}  ${theme.costColor(totalCost)(col(`$${totalCost.toFixed(4)}`, VAL_W, "right"), c)}`),
-    row(`${theme.dim("ACTIVE DAYS ", c)}  ${theme.white(col(String(activeDays), VAL_W, "right"), c)}`),
-    row(`${theme.dim("AVG/DAY     ", c)}  ${theme.white(col(compactNumber(avgDay), VAL_W, "right"), c)}`),
-    row(""),
+    emptyRow(),
+    row(`  ${theme.dim("⚡ Tokens", c)}  ${theme.bright(col(compactNumber(totalTokens), VAL_W, "right"), c)}`),
+    row(`  ${theme.dim("$  Cost  ", c)}  ${theme.costColor(totalCost)(col(`$${totalCost.toFixed(2)}`, VAL_W, "right"), c)}`),
+    row(`  ${theme.dim("●  Active", c)}  ${theme.green(col(String(activeDays), VAL_W, "right"), c)}`),
+    row(`  ${theme.dim("↕  Avg/day", c)}  ${theme.white(col(compactNumber(avgDay), VAL_W, "right"), c)}`),
+    emptyRow(),
     b(bottom()),
     "",
   ];

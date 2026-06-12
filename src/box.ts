@@ -1,6 +1,6 @@
 import { visibleLen } from "./theme.js";
 
-export const BOX_WIDTH = 72;
+export const BOX_WIDTH = 74;
 const INNER = BOX_WIDTH - 4;
 
 const B = {
@@ -28,6 +28,10 @@ export function row(inner: string): string {
   const vl = visibleLen(inner);
   const pad = Math.max(0, INNER - vl);
   return `${B.v} ${inner}${" ".repeat(pad)} ${B.v}`;
+}
+
+export function emptyRow(): string {
+  return row("");
 }
 
 export function truncate(s: string, maxLen: number): string {

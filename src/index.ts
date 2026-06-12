@@ -6,7 +6,7 @@ import { renderHeatmap } from "./heatmap.js";
 import { renderModels } from "./models.js";
 import { renderProjects } from "./projects.js";
 import { renderTrends } from "./trends.js";
-import { top, mid, bottom, row, col, dimBorder } from "./box.js";
+import { top, mid, bottom, row, emptyRow, col, dimBorder } from "./box.js";
 import { theme as t } from "./theme.js";
 
 const reset = "\u001b[0m";
@@ -191,31 +191,38 @@ function main(): void {
       return;
     }
 
-    const stats = [
-      `${t.green(String(visibleActiveDays), colors)} ${t.dim("active", colors)}`,
-      `${t.green(String(streaks.current), colors)} ${t.dim("streak", colors)}`,
-      `${t.blue(String(streaks.longest), colors)} ${t.dim("best", colors)}`,
-      `${t.white(compactNumber(summary.lifetimeTokens), colors)} ${t.dim("all-time", colors)}`,
-    ].join(`  ${t.dim("│", colors)}  `);
+    const headerLine = `${t.bold("MiMoCode", colors)}  ${t.teal(compactNumber(visibleTokens), colors)} ${t.dim("tokens", colors)}  ${t.dimmer("·", colors)}  ${t.dim(`${options.weeks}w`, colors)}  ${t.dimmer("·", colors)}  ${t.dim(formatPath(options.dbPath), colors)}`;
 
-    const pathStr = formatPath(options.dbPath);
-    const header = `${t.bold("MiMoCode", colors)} ${t.green(compactNumber(visibleTokens), colors)} ${t.dim("tokens", colors)} ${t.dim("/", colors)} ${t.dim(`${options.weeks}w`, colors)} ${t.dim(pathStr, colors)}`;
+    // Usage stats — focal point
+    const usageStats = [
+      `${t.green(String(visibleActiveDays), colors)}  ${t.dim("active", colors)}`,
+      `${t.teal(String(streaks.current), colors)}  ${t.dim("streak", colors)}`,
+      `${t.blue(String(streaks.longest), colors)}  ${t.dim("best", colors)}`,
+      `${t.bright(compactNumber(summary.lifetimeTokens), colors)}  ${t.dim("all-time", colors)}`,
+    ].join(`   ${t.dimmer("│", colors)}   `);
 
+    // Meta info — secondary
     const costFn = t.costColor(summary.cost);
-    const status = `${t.dim("v0.1.0", colors)}  ${t.dim("│", colors)}  ${t.green("●", colors)} ${t.green(`${streaks.current}d`, colors)} ${t.dim("streak", colors)}  ${t.dim("│", colors)}  ${costFn(`$${summary.cost.toFixed(2)}`, colors)} ${t.dim("total cost", colors)}`;
+    const metaInfo = `${t.dim("⬡ v0.1.0", colors)}   ${t.dimmer("│", colors)}   ${t.green("●", colors)} ${t.teal(`${streaks.current}d`, colors)} ${t.dim("streak", colors)}   ${t.dimmer("│", colors)}   ${t.dim("$", colors)}${costFn(summary.cost.toFixed(2), colors)} ${t.dim("total cost", colors)}`;
 
     const b = (s: string) => dimBorder(s, colors);
 
     const output = [
       "",
       b(top()),
-      row(header),
+      row(headerLine),
       b(mid()),
+      emptyRow(),
       ...renderHeatmap(activity, options.weeks, colors).map((line) => row(line.trim())),
+      emptyRow(),
       b(mid()),
-      row(stats),
+      emptyRow(),
+      row(usageStats),
+      emptyRow(),
       b(mid()),
-      row(status),
+      emptyRow(),
+      row(metaInfo),
+      emptyRow(),
       b(bottom()),
       "",
     ];
