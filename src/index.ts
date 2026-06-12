@@ -199,7 +199,7 @@ function main(): void {
       return;
     }
 
-    const headerLine = `${t.bold("MiMoCode", colors)}  ${t.teal(compactNumber(visibleTokens), colors)} ${t.dim("tokens", colors)}  ${t.dimmer("·", colors)}  ${t.dim(`${options.weeks}w`, colors)}  ${t.dimmer("·", colors)}  ${t.dim(formatPath(options.dbPath), colors)}`;
+    const headerLine = `${t.bold("MiMoCode", colors)}  ${t.teal(compactNumber(visibleTokens), colors)} ${t.dim("tokens", colors)}  ${t.dimmer("·", colors)}  ${t.dim(`${options.weeks}w`, colors)}`;
 
     // Usage stats — focal point
     const usageStats = [
