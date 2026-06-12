@@ -1,13 +1,6 @@
 const R = "\u001b[0m";
 
 export const theme = {
-  // 1. Box-drawing
-  box: {
-    tl: "╭", tr: "╮", bl: "╰", br: "╯",
-    h: "─", v: "│", ml: "├", mr: "┤",
-  },
-
-  // 2. Semantic colors
   green:   (s: string, c: boolean) => c ? `\u001b[38;2;57;211;83m${s}${R}` : s,
   yellow:  (s: string, c: boolean) => c ? `\u001b[38;2;210;153;34m${s}${R}` : s,
   red:     (s: string, c: boolean) => c ? `\u001b[38;2;248;81;73m${s}${R}` : s,
@@ -16,7 +9,6 @@ export const theme = {
   bold:    (s: string, c: boolean) => c ? `\u001b[1m${s}${R}` : s,
   white:   (s: string, c: boolean) => c ? `\u001b[1;38;2;230;237;243m${s}${R}` : s,
 
-  // Cost coloring by threshold
   costColor: (cost: number) => {
     if (cost <= 0) return theme.dim;
     if (cost < 1) return theme.green;
@@ -25,11 +17,11 @@ export const theme = {
   },
 };
 
-// 3. Gradient bar with sub-character precision
 const blocks = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"];
 
 export function gradientBar(ratio: number, width: number, c: boolean): string {
-  const filled = ratio * width;
+  const r = Math.max(0, Math.min(1, ratio));
+  const filled = r * width;
   const full = Math.floor(filled);
   const partial = Math.round((filled - full) * 8);
   const empty = width - full - (partial > 0 ? 1 : 0);
@@ -38,17 +30,17 @@ export function gradientBar(ratio: number, width: number, c: boolean): string {
   if (c) {
     for (let i = 0; i < full; i++) {
       const t = width > 1 ? i / (width - 1) : 0;
-      const r = Math.round(26 + t * 31);
+      const ri = Math.round(26 + t * 31);
       const g = Math.round(127 + t * 84);
       const b = Math.round(50 + t * 1);
-      bar += `\u001b[38;2;${r};${g};${b}m█${R}`;
+      bar += `\u001b[38;2;${ri};${g};${b}m█${R}`;
     }
     if (partial > 0) {
       const t = width > 1 ? full / (width - 1) : 0;
-      const r = Math.round(26 + t * 31);
+      const ri = Math.round(26 + t * 31);
       const g = Math.round(127 + t * 84);
       const b = Math.round(50 + t * 1);
-      bar += `\u001b[38;2;${r};${g};${b}m${blocks[partial]}${R}`;
+      bar += `\u001b[38;2;${ri};${g};${b}m${blocks[partial]}${R}`;
     }
   } else {
     bar = "█".repeat(full) + (partial > 0 ? blocks[partial] : "");
@@ -57,13 +49,12 @@ export function gradientBar(ratio: number, width: number, c: boolean): string {
   return bar;
 }
 
-// 5. GitHub heatmap palette (5 levels: empty → low → med → high → max)
 const heatColors = [
-  [22, 27, 34],    // #161b22 — empty
-  [14, 68, 41],    // #0e4429 — low
-  [0, 109, 50],    // #006d32 — med
-  [38, 166, 65],   // #26a641 — high
-  [57, 211, 83],   // #39d353 — max
+  [22, 27, 34],
+  [14, 68, 41],
+  [0, 109, 50],
+  [38, 166, 65],
+  [57, 211, 83],
 ];
 
 export function heatCell(level: number, c: boolean): string {
@@ -72,16 +63,6 @@ export function heatCell(level: number, c: boolean): string {
   return `\u001b[38;2;${r};${g};${b}m■${R}`;
 }
 
-// 7. Number alignment helpers
-export function padR(s: string, w: number): string {
-  return s.padEnd(w);
-}
-
-export function padL(s: string, w: number): string {
-  return s.padStart(w);
-}
-
-// Visible length (strips ANSI escape codes)
 export function visibleLen(s: string): number {
   return s.replace(/\u001b\[[0-9;]*m/g, "").length;
 }

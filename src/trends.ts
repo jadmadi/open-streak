@@ -1,11 +1,14 @@
 import { DailyRow } from "./db.js";
 import { compactNumber } from "./stats.js";
-import { theme, gradientBar, padR, padL } from "./theme.js";
+import { theme, gradientBar } from "./theme.js";
+import { top, mid, bottom, row, col, BOX_WIDTH } from "./box.js";
 
 const sparkChars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
+const LABEL_W = 14;
+const VAL_W = 14;
 
 export function renderTrends(daily: DailyRow[], c: boolean): string[] {
-  if (daily.length === 0) return [theme.dim("  No activity data available.", c)];
+  if (daily.length === 0) return [row(theme.dim("No activity data available.", c))];
 
   const weeks: { start: string; tokens: number; days: number }[] = [];
   let currentWeek: { start: string; tokens: number; days: number } | null = null;
@@ -14,7 +17,6 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
     const date = new Date(`${day.day}T00:00:00`);
     const weekStart = new Date(date);
     weekStart.setDate(date.getDate() - date.getDay());
-
     const weekKey = weekStart.toISOString().slice(0, 10);
     if (!currentWeek || currentWeek.start !== weekKey) {
       if (currentWeek) weeks.push(currentWeek);
@@ -36,7 +38,6 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
     })
     .join("");
 
-  // Trend % change
   let trendPct = "";
   if (weeks.length >= 2) {
     const prev = weeks[weeks.length - 2].tokens;
@@ -52,22 +53,21 @@ export function renderTrends(daily: DailyRow[], c: boolean): string[] {
   const activeDays = daily.filter((d) => d.turns > 0).length;
   const avgDay = activeDays > 0 ? Math.round(totalTokens / activeDays) : 0;
 
-  const border = theme.box.h.repeat(50);
   const lines: string[] = [
     "",
-    `  ${theme.box.tl}${border}${theme.box.tr}`,
-    `  ${theme.box.v} ${theme.bold("WEEKLY TREND", c)}${" ".repeat(22)}${theme.box.v}`,
-    `  ${theme.box.ml}${border}${theme.box.mr}`,
-    `  ${theme.box.v}  ${trendColor(sparkline, c)}${trendColor(trendPct, c)}${" ".repeat(Math.max(0, 46 - sparkline.length - trendPct.length))} ${theme.box.v}`,
-    `  ${theme.box.ml}${border}${theme.box.mr}`,
-    `  ${theme.box.v} ${theme.bold("SUMMARY", c)}${" ".repeat(40)}${theme.box.v}`,
-    `  ${theme.box.v}                                              ${theme.box.v}`,
-    `  ${theme.box.v}  ${theme.dim("TOTAL TOKENS", c)}  ${theme.white(padL(compactNumber(totalTokens), 14), c)}                    ${theme.box.v}`,
-    `  ${theme.box.v}  ${theme.dim("TOTAL COST  ", c)}  ${theme.costColor(totalCost)(padL(`$${totalCost.toFixed(4)}`, 14), c)}                    ${theme.box.v}`,
-    `  ${theme.box.v}  ${theme.dim("ACTIVE DAYS ", c)}  ${theme.white(padL(String(activeDays), 14), c)}                    ${theme.box.v}`,
-    `  ${theme.box.v}  ${theme.dim("AVG/DAY     ", c)}  ${theme.white(padL(compactNumber(avgDay), 14), c)}                    ${theme.box.v}`,
-    `  ${theme.box.v}                                              ${theme.box.v}`,
-    `  ${theme.box.bl}${border}${theme.box.br}`,
+    top(),
+    row(theme.bold("WEEKLY TREND", c)),
+    mid(),
+    row(trendColor(sparkline + trendPct, c)),
+    mid(),
+    row(theme.bold("SUMMARY", c)),
+    row(""),
+    row(`${theme.dim("TOTAL TOKENS", c)}  ${theme.white(col(compactNumber(totalTokens), VAL_W, "right"), c)}`),
+    row(`${theme.dim("TOTAL COST  ", c)}  ${theme.costColor(totalCost)(col(`$${totalCost.toFixed(4)}`, VAL_W, "right"), c)}`),
+    row(`${theme.dim("ACTIVE DAYS ", c)}  ${theme.white(col(String(activeDays), VAL_W, "right"), c)}`),
+    row(`${theme.dim("AVG/DAY     ", c)}  ${theme.white(col(compactNumber(avgDay), VAL_W, "right"), c)}`),
+    row(""),
+    bottom(),
     "",
   ];
 
