@@ -13,8 +13,7 @@
     "dev": "tsx src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "node dist/index.js --no-color",
-    "postinstall": "prebuild-install || node-gyp rebuild --release"
+    "check": "node dist/index.js --no-color"
   },
   "keywords": [
     "mimocode",
@@ -25,7 +24,7 @@
     "terminal",
     "heatmap"
   ],
-  "author": "",
+  "author": "Jad Madi <jadmadi@gmail.com>",
   "license": "MIT",
   "engines": {
     "node": ">=18"
@@ -38,11 +37,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mimocode/mimo-streak"
+    "url": "https://github.com/jadmadi/mimo-streak"
   },
-  "homepage": "https://github.com/mimocode/mimo-streak#readme",
+  "homepage": "https://github.com/jadmadi/mimo-streak#readme",
   "bugs": {
-    "url": "https://github.com/mimocode/mimo-streak/issues"
+    "url": "https://github.com/jadmadi/mimo-streak/issues"
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0"

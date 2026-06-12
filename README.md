@@ -1,6 +1,46 @@
 # mimo-streak
 
-A GitHub-style terminal activity heatmap for your local MiMoCode usage data.
+GitHub-style terminal activity heatmap for your MiMoCode usage data.
+
+<p align="center">
+  <a href="https://platform.xiaomimimo.com?ref=8ACN29">
+    <img src="https://img.shields.io/badge/Powered%20by-MiMo%20Open%20Platform-teal?style=for-the-badge" alt="Powered by MiMo Open Platform">
+  </a>
+  <a href="https://github.com/jadmadi/mimo-streak/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License">
+  </a>
+</p>
+
+<p align="center">
+  <b>🔥 Get $2 API credits + 10% off your first plan.</b><br>
+  <a href="https://platform.xiaomimimo.com?ref=8ACN29">Sign up with invite code <code>8ACN29</code> →</a>
+</p>
+
+```
+╭────────────────────────────────────────────────────────────────────────╮
+│ MiMoCode  414M tokens  ·  52w                                        │
+├────────────────────────────────────────────────────────────────────────┤
+│                                                                        │
+│ JunJul Aug  Sep Oct Nov  Dec Jan Feb Mar  Apr May  J                   │
+│ ····················································                   │
+│ Mon ····················································               │
+│ ····················································                   │
+│ Wed ···················································░               │
+│ ···········································░·······█                   │
+│ Fri ···················································◈               │
+│ ···················································                    │
+│ Less · ░ ▒ ▓ █ More                                                    │
+│                                                                        │
+├────────────────────────────────────────────────────────────────────────┤
+│                                                                        │
+│ 4  active   │   3  streak   │   3  best   │   414M  all-time           │
+│                                                                        │
+├────────────────────────────────────────────────────────────────────────┤
+│                                                                        │
+│ ⬡ v0.1.0   │   ● 3d streak   │   $7.90 total cost                      │
+│                                                                        │
+╰────────────────────────────────────────────────────────────────────────╯
+```
 
 ## Install
 
@@ -13,7 +53,6 @@ With pnpm:
 
 ```bash
 pnpm add -g mimo-streak
-mimo-streak
 ```
 
 Run without installing:
@@ -25,14 +64,16 @@ npx mimo-streak
 ## Usage
 
 ```bash
-mimo-streak                    # Show activity heatmap
+mimo-streak                    # Activity heatmap with streaks
 mimo-streak --weeks 26         # Show 26 weeks
 mimo-streak --json             # Output as JSON
 mimo-streak --no-color         # Disable colors
 mimo-streak --project mimo     # Filter by project name
-mimo-streak models             # Show model breakdown
-mimo-streak projects           # Show project activity
-mimo-streak trends             # Show weekly trend chart
+mimo-streak models             # Model breakdown
+mimo-streak projects           # Project activity
+mimo-streak trends             # Weekly trend chart
+mimo-streak models mimo        # Filter models by name
+mimo-streak projects whatsapp  # Filter projects by name
 ```
 
 ## Options
@@ -41,7 +82,7 @@ mimo-streak trends             # Show weekly trend chart
 |------|-------------|
 | `--db <path>` | SQLite database path (default: `~/.local/share/mimocode/mimocode.db`) |
 | `--weeks <4-104>` | Heatmap width in weeks (default: 52) |
-| `--project <name>` | Filter by project directory name |
+| `--project <name>` | Filter heatmap activity by project directory name |
 | `--json` | Output as JSON |
 | `--no-color` | Disable ANSI colors |
 
@@ -49,19 +90,35 @@ mimo-streak trends             # Show weekly trend chart
 
 | Command | Description |
 |---------|-------------|
-| `models` | Token usage breakdown by model (mimo-auto, mimo-v2.5, etc.) |
-| `projects` | Activity breakdown by project directory |
-| `trends` | Weekly trend sparkline chart |
+| `models [filter]` | Token usage by model (mimo-auto, mimo-v2.5, etc.) |
+| `projects [filter]` | Activity by project directory |
+| `trends [filter]` | Weekly trend sparkline chart |
+
+The optional `[filter]` narrows results to matching names.
+
+## Features
+
+- **5-level heatmap** with GitHub-style color ramp
+- **Today indicator** — highlighted cell on the current day
+- **Streak tracking** — current and longest consecutive active days
+- **Model breakdown** — see which models use the most tokens
+- **Project activity** — token usage per project
+- **Cost tracking** — API costs color-coded by threshold
+- **Adaptive colors** — detects dark/light terminal, WCAG AAA contrast
+- **Gradient bars** with sub-character precision (▏▎▍▌▋▊▉█)
+- **Box-drawing UI** with consistent 74-char alignment
+- **JSON output** for scripting and automation
 
 ## Metrics
 
 | Display | Source |
 |---------|--------|
-| Daily square | Assistant-message token totals for one local calendar day |
+| Daily square | Assistant-message token totals for one calendar day |
 | Color intensity | Relative token usage across days with activity |
-| Current streak | Consecutive calendar days with assistant activity ending today |
-| Longest streak | Longest consecutive run of days with assistant activity |
-| Model breakdown | Token usage per model (mimo-auto, mimo-v2.5, etc.) |
+| Today indicator | Highlighted ◈ cell for current day |
+| Current streak | Consecutive days with activity ending today |
+| Longest streak | Longest consecutive run of active days |
+| Model breakdown | Token usage per model |
 | Cost | API cost per day/model |
 
 ## Development
@@ -73,6 +130,12 @@ pnpm test
 pnpm dev
 ```
 
+## Made by
+
+**Jad Madi** — [@jadmadi](https://x.com/jadmadi) · [github.com/jadmadi](https://github.com/jadmadi)
+
+Built with [MiMo Open Platform](https://platform.xiaomimimo.com?ref=8ACN29) — Xiaomi's most powerful AI.
+
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE) for details.
