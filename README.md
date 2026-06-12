@@ -3,17 +3,12 @@
 GitHub-style terminal activity heatmap for your MiMoCode usage data.
 
 <p align="center">
-  <a href="https://platform.xiaomimimo.com?ref=8ACN29">
-    <img src="https://img.shields.io/badge/Powered%20by-MiMo%20Open%20Platform-teal?style=for-the-badge" alt="Powered by MiMo Open Platform">
-  </a>
   <a href="https://github.com/jadmadi/mimo-streak/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License">
   </a>
-</p>
-
-<p align="center">
-  <b>🔥 Get $2 API credits + 10% off your first plan.</b><br>
-  <a href="https://platform.xiaomimimo.com?ref=8ACN29">Sign up with invite code <code>8ACN29</code> →</a>
+  <a href="https://paypal.me/Madise">
+    <img src="https://img.shields.io/badge/Support-PayPal-00457C?style=for-the-badge&logo=paypal" alt="Support via PayPal">
+  </a>
 </p>
 
 ```
@@ -130,11 +125,15 @@ pnpm test
 pnpm dev
 ```
 
+## Support
+
+If this tool saved you time, consider buying me a coffee ☕
+
+[![Support via PayPal](https://img.shields.io/badge/Support%20this%20project-PayPal-00457C?style=for-the-badge&logo=paypal)](https://paypal.me/Madise)
+
 ## Made by
 
 **Jad Madi** — [@jadmadi](https://x.com/jadmadi) · [github.com/jadmadi](https://github.com/jadmadi)
-
-Built with [MiMo Open Platform](https://platform.xiaomimimo.com?ref=8ACN29) — Xiaomi's most powerful AI.
 
 ## License
 
