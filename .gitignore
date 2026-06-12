@@ -3,6 +3,5 @@ dist/
 dist-tests/
 build/
 *.tgz
-*.gif
 *.png
 build/
