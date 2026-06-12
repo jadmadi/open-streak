@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 
+import { createRequire } from "node:module";
 import { openDb, loadSummary, loadDaily, loadModels, loadProjects, defaultDbPath, type Options } from "./db.js";
-import { computeStreaks, startOfToday, addDays, localDay, compactNumber, formatPath } from "./stats.js";
+import { computeStreaks, startOfToday, addDays, localDay, compactNumber } from "./stats.js";
 import { renderHeatmap } from "./heatmap.js";
 import { renderModels } from "./models.js";
 import { renderProjects } from "./projects.js";
 import { renderTrends } from "./trends.js";
-import { top, mid, bottom, row, emptyRow, col, dimBorder } from "./box.js";
+import { top, mid, bottom, row, emptyRow, dimBorder } from "./box.js";
 import { theme as t } from "./theme.js";
 
-const reset = "\u001b[0m";
+const require = createRequire(import.meta.url);
+const pkg = require("../package.json") as { version: string };
 
 function usage(): string {
   return `Usage: mimo-streak [options] [command] [filter]
@@ -29,7 +31,8 @@ Options:
   --project <name>  Filter heatmap activity by project directory name
   --json            Print computed data as JSON instead of the dashboard
   --no-color        Disable ANSI colors
-  -h, --help        Show this help`;
+  -h, --help        Show this help
+  -v, --version     Show version`;
 }
 
 function parseArgs(args: string[]): Options {
@@ -51,6 +54,11 @@ function parseArgs(args: string[]): Options {
 
     if (argument === "-h" || argument === "--help") {
       console.log(usage());
+      process.exit(0);
+    }
+
+    if (argument === "-v" || argument === "--version") {
+      console.log(pkg.version);
       process.exit(0);
     }
 
@@ -211,7 +219,7 @@ function main(): void {
 
     // Meta info — secondary
     const costFn = t.costColor(summary.cost);
-    const metaInfo = `${t.dim("⬡ v0.1.0", colors)}   ${t.dimmer("│", colors)}   ${t.green("●", colors)} ${t.teal(`${streaks.current}d`, colors)} ${t.dim("streak", colors)}   ${t.dimmer("│", colors)}   ${t.dim("$", colors)}${costFn(summary.cost.toFixed(2), colors)} ${t.dim("total cost", colors)}`;
+    const metaInfo = `${t.dim(`⬡ v${pkg.version}`, colors)}   ${t.dimmer("│", colors)}   ${t.green("●", colors)} ${t.teal(`${streaks.current}d`, colors)} ${t.dim("streak", colors)}   ${t.dimmer("│", colors)}   ${t.dim("$", colors)}${costFn(summary.cost.toFixed(2), colors)} ${t.dim("total cost", colors)}`;
 
     const b = (s: string) => dimBorder(s, colors);
 

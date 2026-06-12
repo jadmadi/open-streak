@@ -4,7 +4,6 @@ const R = "\u001b[0m";
 
 // Detect terminal background: true = dark, false = light
 function detectDarkBg(): boolean {
-  const term = process.env.TERM_PROGRAM ?? process.env.TERM ?? "";
   const fgBg = process.env.COLORFGBG ?? "";
 
   // COLORFGBG = "fg;bg" — if bg is 0-6 or 16-51 it's dark
@@ -146,8 +145,9 @@ export function gradientBar(ratio: number, width: number, c: boolean): string {
 }
 
 export function heatCell(level: number, c: boolean): string {
-  if (!c) return ["·", "░", "▒", "▓", "█"][level];
-  const [r, g, b] = heatRamp[level];
+  const clamped = Math.max(0, Math.min(4, level));
+  if (!c) return ["·", "░", "▒", "▓", "█"][clamped];
+  const [r, g, b] = heatRamp[clamped];
   return `\u001b[38;2;${r};${g};${b}m■${R}`;
 }
 

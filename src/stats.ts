@@ -79,8 +79,3 @@ export function compactNumber(value: number): string {
     maximumFractionDigits: 1,
   }).format(value);
 }
-
-export function formatPath(path: string): string {
-  const homedir = process.env.HOME ?? "~";
-  return path.startsWith(`${homedir}/`) ? path.replace(homedir, "~") : path;
-}

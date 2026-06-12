@@ -1,4 +1,4 @@
-import Database from "better-sqlite3";
+import { DatabaseSync } from "node:sqlite";
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -50,15 +50,19 @@ export type ProjectRow = {
 
 export const defaultDbPath = join(homedir(), ".local", "share", "mimocode", "mimocode.db");
 
-export function openDb(dbPath: string): Database.Database {
+export function openDb(dbPath: string): DatabaseSync {
   if (!existsSync(dbPath)) {
     console.error(`mimo-streak: database not found: ${dbPath}`);
+    console.error("");
+    console.error("  This tool reads from MiMoCode's SQLite database.");
+    console.error("  Make sure MiMoCode is installed and has been used at least once.");
+    console.error("  Or specify a custom path with --db <path>");
     process.exit(1);
   }
-  return new Database(dbPath, { readonly: true });
+  return new DatabaseSync(dbPath, { readOnly: true });
 }
 
-export function loadSummary(db: Database.Database): SummaryRow {
+export function loadSummary(db: DatabaseSync): SummaryRow {
   return db
     .prepare(
       `WITH message_usage AS (
@@ -94,7 +98,7 @@ export function loadSummary(db: Database.Database): SummaryRow {
 }
 
 export function loadDaily(
-  db: Database.Database,
+  db: DatabaseSync,
   project: string | null,
   _since: string | null,
   _until: string | null
@@ -129,7 +133,7 @@ export function loadDaily(
 }
 
 export function loadModels(
-  db: Database.Database,
+  db: DatabaseSync,
   _since: string | null,
   _until: string | null
 ): ModelRow[] {
@@ -155,7 +159,7 @@ export function loadModels(
     .all() as ModelRow[];
 }
 
-export function loadProjects(db: Database.Database): ProjectRow[] {
+export function loadProjects(db: DatabaseSync): ProjectRow[] {
   return db
     .prepare(
       `SELECT

@@ -41,6 +41,10 @@ GitHub-style terminal activity heatmap for your MiMoCode usage data.
 ╰────────────────────────────────────────────────────────────────────────╯
 ```
 
+## Requirements
+
+- **Node.js >= 22.5.0** (for built-in `node:sqlite` support)
+
 ## Install
 
 ```bash
@@ -84,6 +88,7 @@ mimo-streak projects whatsapp  # Filter projects by name
 | `--project <name>` | Filter heatmap activity by project directory name |
 | `--json` | Output as JSON |
 | `--no-color` | Disable ANSI colors |
+| `-v, --version` | Show version |
 
 ## Subcommands
 
@@ -106,6 +111,7 @@ The optional `[filter]` narrows results to matching names.
 - **Adaptive colors** — detects dark/light terminal, WCAG AAA contrast
 - **Gradient bars** with sub-character precision (▏▎▍▌▋▊▉█)
 - **Box-drawing UI** with consistent 74-char alignment
+- **Zero native dependencies** — uses Node.js built-in `node:sqlite`
 - **JSON output** for scripting and automation
 
 ## Metrics
@@ -137,7 +143,7 @@ If this tool saved you time, consider buying me a coffee ☕
 
 ## Made by
 
-**Jad Madi** — [@jadmadi](https://x.com/jadmadi) · [github.com/jadmadi](https://github.com/jadmadi)
+**Jad Madi** — [jadmadi.net](https://jadmadi.net/) · [@jadmadi](https://x.com/jadmadi) · [github.com/jadmadi](https://github.com/jadmadi)
 
 ## License
 

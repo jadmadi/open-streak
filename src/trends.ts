@@ -1,6 +1,6 @@
 import { DailyRow } from "./db.js";
 import { compactNumber } from "./stats.js";
-import { theme, gradientBar } from "./theme.js";
+import { theme } from "./theme.js";
 import { col } from "./box.js";
 
 const sparkChars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
