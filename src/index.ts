@@ -115,7 +115,19 @@ function main(): void {
       let models = loadModels(db, options.since, options.until);
       if (options.project) {
         const filter = options.project.toLowerCase();
-        models = models.filter((m) => m.model.toLowerCase().includes(filter) || m.provider.toLowerCase().includes(filter));
+        const filterSegments = filter.split("-").length;
+        models = models.filter((m) => {
+          const name = m.model.toLowerCase();
+          if (name === filter) return true;
+          if (m.provider.toLowerCase() === filter) return true;
+          // "mimo" → only single-segment models whose name starts with "mimo"
+          // "mimo-v2.5" → prefix match (matches mimo-v2.5 and mimo-v2.5-pro)
+          if (filterSegments === 1) {
+            const nameSegments = name.split("-").length;
+            return nameSegments === 1 && name.startsWith(filter);
+          }
+          return name.startsWith(filter);
+        });
       }
       if (options.json) {
         console.log(JSON.stringify(models, null, 2));
